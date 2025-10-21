@@ -1,7 +1,18 @@
-import React from 'react'
+'use client'
 
+import React, { use } from 'react'
+import { AuthFormSchema } from '../../../constants/stores/loginStore'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+
+type authFormDataType = z.infer<typeof AuthFormSchema>
 
 const StaffLogin = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm<authFormDataType>()
+  const onSubmitting = (data: any) => {
+    console.log(data)
+  }
+
   return (
     <div className='place-items-center mt-4'>
       <div>
@@ -13,45 +24,21 @@ const StaffLogin = () => {
         </div>
         {/*personal info form here  */}
         <div>
-          <form action="#">
-            <div>
-              <div className='mb-2 mt-2 ml-1'>
-                <h1 className='text-[14px]'>Name</h1>
-              </div>
-              <div className='grid grid-cols-2 gap-2 '>
-                <div className=''>
-                  <input type="text" name='First Name' placeholder='First Name'
-                    className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[14px]
-                    focus:outline-0 p-2'
-                  />
-                </div>
-                <div>
-                  <input type="text" name='Last Name' placeholder='Last Name'
-                    className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[14px]
-                    focus:outline-0 p-2'
-                  />
-                </div>
-              </div>
-            </div>
-            <hr className='mt-4 mb-4 border-gray-200' />
+          <form onSubmit={handleSubmit(onSubmitting)} >
             <div>
               <div className='mb-2 mt-2 ml-1'>
                 <h1 className='text-[14px]'>Affiliated Institution</h1>
               </div>
-              <input type="text" name='institution' placeholder='Name of institution you work for'
-                className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[14px]
+              <input type="text" {...register("institution", {
+                required: "Affiliated institution is required",
+              })}
+                placeholder='Name of institution you work for'
+                className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[12px]
                 focus:outline-0 p-2'
               />
-            </div>
-            <hr className='mt-4 mb-4 border-gray-200' />
-            <div>
-              <div className='mb-2 mt-2 ml-1'>
-                <h1 className='text-[14px]'>Occupation/Position Served</h1>
-              </div>
-              <input type="text" name='occupation' placeholder='e.g. General Practitioner'
-                className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[14px]
-                focus:outline-0 p-2'
-              />
+              {errors.institution && (
+                <p className='text-red-600 font-regular text-[12px]'>{errors.institution.message}</p>
+              )}
             </div>
             <hr className='mt-4 mb-4 border-gray-200' />
             <div className='grid grid-cols-2 gap-2'>
@@ -59,28 +46,36 @@ const StaffLogin = () => {
                 <div className='mb-2 mt-2 ml-1'>
                   <h1 className='text-[14px]'>Work ID</h1>
                 </div>
-                <input type="text" name='id' placeholder='Your work ID'
-                  className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[14px]
+                <input type="text" {...register("workID", {
+                  required: "Work ID is required",
+                })}
+                  placeholder='Your work ID'
+                  className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[12px]
                   focus:outline-0 p-2'
                 />
+                {errors.workID && (
+                  <p className='text-red-600 font-regular text-[12px]'>{errors.workID.message}</p>
+                )}
               </div>
               <div>
                 <div className='mb-2 mt-2 ml-1'>
                   <h1 className='text-[14px]'>Work Email</h1>
                 </div>
-                <input type="text" name='email' placeholder='Your work email'
-                  className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[14px]
+                <input type="text" {...register("workEmail", {
+                  required: "Work email is required",
+                })}
+                  placeholder='Your work email'
+                  className='bg-gray-200 h-[50px] w-full placeholder:p-2 text-[12px]
                   focus:outline-0 p-2
                   '
                 />
+                {errors.workEmail && (
+                  <p className='text-red-600 font-regular text-[12px]'>{errors.workEmail.message}</p>
+                )}
               </div>
             </div>
             <hr className='mt-4 mb-4 border-gray-200' />
             <div>
-              <div className='mb-2 mt-2 ml-1'>
-                <p className='text-[12px] text-red-600 font-regular'>
-                  Note: An authentication code will be sent to your work email for verification                </p>
-              </div>
               <button
                 className='bg-black text-white text-[14px] font-light h-[50px] w-full cursor-pointer'
               >Get Authentication Code</button>
