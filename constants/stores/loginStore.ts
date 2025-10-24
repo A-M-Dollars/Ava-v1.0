@@ -1,5 +1,5 @@
-import {z} from 'zod'
-import {create} from 'zustand'
+import { z } from 'zod'
+import { create } from 'zustand'
 
 interface OTPstate {
     otpData: z.infer<typeof verifyCodeSchema> | null
@@ -20,10 +20,9 @@ export const verifyCodeSchema = z.object({
 
 export const OTPstore = create<OTPstate>((set) => ({
     otpData: null,
-    setOTPData: (data) => set(() => ({otpData: data})),
-    clearOTPData: () => set(() => ({otpData: null}))
+    setOTPData: (data) => set(() => ({ otpData: data })),
+    clearOTPData: () => set(() => ({ otpData: null }))
 }))
-
 
 // {
 //     "status": "success",
